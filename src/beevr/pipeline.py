@@ -51,11 +51,13 @@ def matter_qa(store: Store, session: Session, matter_id: str, question: str,
     claim = Claim(question, citations=citations)
 
     # 4. verify (Stage A grounding + Stage B entailment) and assemble-or-abstain
-    # Tuned per doc 13 §3.4 on the EDGAR dev set (see PROGRESS): clause-granularity
-    # premises (party-boundary segmentation) + tau_e=0.97 separate the
-    # entity-confusion trap (best-clause 0.9487) from grounded claims (>=0.9968).
-    # Pinned per release; MUST be re-tuned when the golden set scales (doc 13 §3.1).
-    result = Verifier(documents, nli, tau_e=0.97,
+    # Tuned per doc 13 §3.4 on the EDGAR dev set (see PROGRESS). tau_e=0.92:
+    # the deterministic entity/role/template guards now block the trap classes
+    # BEFORE NLI (entity traps measured 0.949-0.986 — un-separable by threshold
+    # from legit paraphrases at 0.934), so tau returns to catching genuine
+    # non-entailment instead of carrying the trap load. Pinned per release;
+    # MUST be re-tuned when the golden set scales (doc 13 §3.1).
+    result = Verifier(documents, nli, tau_e=0.92,
                       clause_premises=True).assemble([claim], needs_evidence=True)
 
     # 5. audit the answer-producing action

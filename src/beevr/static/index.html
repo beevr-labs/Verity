@@ -50,7 +50,8 @@
   <!-- S2: matter switcher pinned — isolation is visible, not hidden (doc 17 §2.1) -->
   <label>Matter: <select id="matter-switcher" aria-label="Active matter"></select></label>
   <nav>
-    <button data-tab="ask" class="active">Ask</button>
+    <button data-tab="overview" class="active">Overview</button>
+    <button data-tab="ask">Ask</button>
     <button data-tab="docs">Documents</button>
     <button data-tab="agent">Obligations</button>
     <button data-tab="audit">Audit</button>
@@ -70,6 +71,18 @@
     <label><input type="checkbox" id="login-admin"> admin</label>
     <button id="login-btn">Sign in</button>
   </div>
+
+  <!-- Overview: proactive briefing — what needs the lawyer's attention -->
+  <section class="card tab" id="tab-overview" hidden>
+    <h3>Matter overview <span class="mut">— what needs your attention</span></h3>
+    <div id="brief-actions"></div>
+    <h4>Deadline radar <span class="mut">(dates found in the documents, click to source)</span></h4>
+    <div id="brief-deadlines" class="mut">loading…</div>
+    <h4>Ask about this matter</h4>
+    <div id="brief-questions" class="mut"></div>
+    <p class="mut">These are pointers into your documents, not legal advice.
+      Every suggested question runs through verified, cited Q&amp;A.</p>
+  </section>
 
   <!-- S4: Ask — citation-first answer -->
   <section class="card tab" id="tab-ask" hidden>
@@ -138,7 +151,7 @@ $("login-btn").onclick = async () => {
   $("who").textContent = $("login-user").value + (roles[0]==="legal_admin"?" (admin)":"");
   $("login").hidden = true;
   await loadMatters(grants);
-  showTab("ask");
+  showTab("overview");            // proactive: land on the briefing, not a blank box
 };
 
 async function loadMatters(grants) {
@@ -162,6 +175,36 @@ function showTab(name){
   $("tab-"+name).hidden = false;
   if (name==="docs") refreshDocs();
   if (name==="audit") refreshAudit();
+  if (name==="overview") refreshBriefing();
+}
+
+// ---- Overview: proactive briefing ----
+async function refreshBriefing(){
+  try {
+    const b = await api("GET", `/matters/${S.matter}/briefing`);
+    $("brief-actions").innerHTML = b.actions.length
+      ? b.actions.map(a=>`<div class="banner abstain">▸ ${esc(a)}</div>`).join("")
+      : `<div class="banner note">Nothing pending — no overdue items, no reviews waiting.</div>`;
+    const badge = s => s==="overdue" ? `<b class="conf-insufficient">OVERDUE</b>`
+                : s==="due_soon" ? `<b class="conf-medium">≤90 days</b>`
+                : `<span class="mut">upcoming</span>`;
+    $("brief-deadlines").innerHTML = b.deadlines.length
+      ? "<table><tr><th>date</th><th>in</th><th></th><th>context</th><th>source</th></tr>" +
+        b.deadlines.map(d=>`<tr>
+          <td>${esc(d.due)}</td><td>${d.days_left}d</td><td>${badge(d.status)}</td>
+          <td class="mut">${esc(d.context.slice(0,90))}…</td>
+          <td><button class="chip" data-doc="${esc(d.chunk_id)}"
+               data-snippet="${esc(d.date_text)}">source</button></td></tr>`).join("") + "</table>"
+      : "<p class='mut'>no dated items found in this matter's documents</p>";
+    document.querySelectorAll("#brief-deadlines .chip").forEach(ch =>
+      ch.onclick = () => { showTab("ask"); openSource(ch); });
+    $("brief-questions").innerHTML = b.suggested_questions.map(q =>
+      `<button class="chip" style="margin:3px" data-q="${esc(q)}">${esc(q)}</button>`).join("");
+    document.querySelectorAll("#brief-questions .chip").forEach(ch =>
+      ch.onclick = () => { $("q").value = ch.dataset.q; showTab("ask"); $("ask-btn").click(); });
+  } catch(e){
+    $("brief-deadlines").innerHTML = `<div class="banner abstain">${esc(e.message)}</div>`;
+  }
 }
 
 // ---- S4: ask -> cited answer ----

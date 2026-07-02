@@ -84,15 +84,19 @@ def test_txt_parse_and_chunk_locators():
     rep = ingest_document(store, "A", "d1",
                           b"First clause applies. Second clause governs fees.\nThird line here.\n\nNew paragraph starts.",
                           "note.txt")
-    assert rep.status == "done" and rep.chunks == 4
-    locs = [store.chunks[f"d1-c{i}"].data["locator"] for i in range(4)]
-    assert all(l.kind == "plaintext" for l in locs)
-    # single \n is REFLOWED into a space (wrapped sentences stay whole for NLI);
-    # paragraph breaks (\n\n) survive — the 4th segment sits after the blank line
-    texts = [store.chunks[f"d1-c{i}"].data["text"] for i in range(4)]
-    assert texts[2] == "Third line here."
-    assert texts[3] == "New paragraph starts."
-    assert locs[3].line_range[0] >= 1                      # after the kept \n\n
+    # short texts MERGE into one retrieval-sized chunk (min_chars, see Chunker);
+    # single \n is REFLOWED to a space so wrapped sentences stay whole for NLI
+    assert rep.status == "done" and rep.chunks == 1
+    chunk = store.chunks["d1-c0"]
+    assert chunk.data["locator"].kind == "plaintext"
+    for part in ["First clause applies", "Third line here", "New paragraph starts"]:
+        assert part in chunk.data["text"]
+
+    # fine-grained segmentation still works when merging is disabled
+    from beevr.ingest import Chunker, parse
+    segs = Chunker(min_chars=0).chunk(
+        parse(b"First clause applies. Second clause governs fees.\nThird one.", "n.txt"), "d")
+    assert len(segs) == 3
 
 
 def test_eml_real_parse():
@@ -149,14 +153,14 @@ def test_unsupported_type_fails_cleanly():
 
 def test_legal_abbreviations_not_split():
     """Root-cause fix from the real EDGAR run: 'Section 2.01', 'N.A.', '3.0x'
-    must stay inside one chunk (fragments broke retrieval + NLI premises)."""
-    store = _store()
+    must stay inside one segment (fragments broke retrieval + NLI premises)."""
+    from beevr.ingest import Chunker, parse
     text = ("The conditions set forth in Sections 4.02 and 4.03 have been satisfied. "
             "BANK OF AMERICA, N.A. acts as Administrative Agent under Section 2.01 hereof. "
             "The Borrower shall maintain a leverage ratio below 3.0x at all times.")
-    rep = ingest_document(store, "A", "d8", text.encode(), "a.txt")
-    texts = [store.chunks[f"d8-c{i}"].data["text"] for i in range(rep.chunks)]
-    assert rep.chunks == 3                                  # not shredded into fragments
+    segs = Chunker(min_chars=0).chunk(parse(text.encode(), "a.txt"), "d8")
+    texts = [c.text for c in segs]
+    assert len(texts) == 3                                  # not shredded into fragments
     assert any("Sections 4.02 and 4.03" in t for t in texts)
     assert any("N.A. acts as Administrative Agent under Section 2.01" in t for t in texts)
     assert any("3.0x at all times" in t for t in texts)

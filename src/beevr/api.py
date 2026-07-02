@@ -41,6 +41,7 @@ class AppState:
     queue: IngestQueue = field(default_factory=IngestQueue)
     nli: NLI = staticmethod(lambda span, claim: lexical_overlap(claim, span))
     extractor: object | None = None    # None -> agent uses RuleExtractor
+    llm: object | None = None          # None -> Q&A runs assertion-mode only
     oidc: object | None = None         # OidcConfig -> enables /auth/oidc
     model_mode: str = "stub"           # "real" when doc-14 roster is loaded
     idempotency: dict = field(default_factory=dict)
@@ -68,10 +69,15 @@ class AppState:
             pass  # stubs remain; /readyz reports degraded mode
         try:
             from .llm import LlmExtractor, TransformersLLM
-            state.extractor = LlmExtractor(TransformersLLM(device=device))
+            # dev-box tier: one resident generative model; 3B reads legal
+            # excerpts reliably where 1.5B refuses (see PROGRESS stress test).
+            # Pilot 48GB runs the doc-14 fast/strong split via vLLM instead.
+            llm = TransformersLLM("Qwen/Qwen2.5-3B-Instruct", device=device)
+            state.llm = llm                      # generative Q&A (compose.py)
+            state.extractor = LlmExtractor(llm)
             state.model_mode = "real"
         except Exception:
-            pass  # RuleExtractor remains
+            pass  # RuleExtractor remains; Q&A stays assertion-mode
         return state
 
 
@@ -266,14 +272,24 @@ def _register_resource_routes(app, state: AppState, require_session):
         s = require_session(authorization)
         if idempotency_key and idempotency_key in state.idempotency:
             return state.idempotency[idempotency_key]
-        result = matter_qa(state.store, s, matter_id, payload["question"],
-                           nli=state.nli, embedder=getattr(state, "embedder", None),
-                           ts=payload.get("ts", ""))
+        embedder = getattr(state, "embedder", None)
+        answer_text = None
+        if state.llm is not None:                       # generative Q&A (compose.py)
+            from .compose import matter_ask
+            result = matter_ask(state.store, s, matter_id, payload["question"],
+                                llm=state.llm, nli=state.nli, embedder=embedder,
+                                ts=payload.get("ts", ""))
+            answer_text = result.answer_text
+        else:                                           # assertion-check fallback
+            result = matter_qa(state.store, s, matter_id, payload["question"],
+                               nli=state.nli, embedder=embedder,
+                               ts=payload.get("ts", ""))
         answer_id = state.next_id("ans")
         resp = {
             "answer_id": answer_id,
             "abstained": result.abstained,
             "confidence": result.confidence,
+            "answer_text": answer_text,
             "claims": [
                 {"text": c.text, "citations": [
                     {"citation_id": state.next_id("cite"),
@@ -287,6 +303,28 @@ def _register_resource_routes(app, state: AppState, require_session):
         if idempotency_key:
             state.idempotency[idempotency_key] = resp
         return resp
+
+    @app.get("/matters/{matter_id}/briefing")
+    def briefing(matter_id: str, authorization: str = Header(None),
+                 today: str | None = None):
+        """Proactive brief: deadline radar + action items + suggested questions.
+        `today` (YYYY-MM-DD) is injectable for tests; defaults to the real date."""
+        from datetime import date as _date
+
+        from .briefing import build_briefing
+        s = require_session(authorization)
+        t = _date.fromisoformat(today) if today else _date.today()
+        b = build_briefing(state.store, s, matter_id, today=t,
+                           agent_runs=state.agent_runs)
+        return {
+            "deadlines": [{
+                "due": d.due.isoformat(), "days_left": d.days_left,
+                "status": d.status, "context": d.context,
+                "chunk_id": d.chunk_id, "date_text": d.date_text,
+            } for d in b.deadlines],
+            "actions": b.actions,
+            "suggested_questions": b.suggested_questions,
+        }
 
     @app.get("/matters/{matter_id}/source/{chunk_id}")
     def source(matter_id: str, chunk_id: str, authorization: str = Header(None)):

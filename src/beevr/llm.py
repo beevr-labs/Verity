@@ -59,6 +59,34 @@ class TransformersLLM:
                 pad_token_id=self.tokenizer.eos_token_id)
         return self.tokenizer.decode(out[0][ids.shape[1]:], skip_special_tokens=True)
 
+    def generate_batch(self, prompts: list[str], *,
+                       max_new_tokens: int = 512) -> list[str]:
+        """One batched GPU pass instead of N serial calls (map-then-verify Q&A
+        makes 6-10 small calls per question; batching cuts wall-clock ~Nx).
+        Decoder-only models need LEFT padding for correct generation."""
+        import torch
+        texts = [self.tokenizer.apply_chat_template(
+                    [{"role": "user", "content": p}],
+                    add_generation_prompt=True, tokenize=False)
+                 for p in prompts]
+        old_side = self.tokenizer.padding_side
+        self.tokenizer.padding_side = "left"
+        if self.tokenizer.pad_token is None:
+            self.tokenizer.pad_token = self.tokenizer.eos_token
+        try:
+            enc = self.tokenizer(texts, return_tensors="pt", padding=True,
+                                 add_special_tokens=False).to(self.device)
+            with torch.no_grad():
+                out = self.model.generate(
+                    **enc, max_new_tokens=max_new_tokens,
+                    do_sample=False, temperature=None, top_p=None, top_k=None,
+                    pad_token_id=self.tokenizer.pad_token_id)
+        finally:
+            self.tokenizer.padding_side = old_side
+        n_in = enc["input_ids"].shape[1]
+        return [self.tokenizer.decode(o[n_in:], skip_special_tokens=True)
+                for o in out]
+
 
 class OpenAICompatLLM:
     """Client for an in-boundary vLLM/Ollama server (pilot form factor)."""

@@ -226,6 +226,37 @@ def _segments(text: str) -> list[tuple[int, int]]:
 
 
 class Chunker:
+    """Sentence/clause segmentation with a MINIMUM chunk size.
+
+    Measured at 357-page scale: raw sentence segments fragment badly (p50=20
+    chars — TOC lines, page numbers), drowning retrieval in 16k junk chunks
+    while the defining recital ranks below noise. Adjacent segments are merged
+    until >= min_chars (capped at max_chars), giving retrieval real context
+    windows while locators still cover the exact merged span.
+    """
+
+    def __init__(self, min_chars: int = 250, max_chars: int = 1200):
+        self.min_chars = min_chars
+        self.max_chars = max_chars
+
+    def _merge(self, spans: list[tuple[int, int]], text: str) -> list[tuple[int, int]]:
+        merged: list[tuple[int, int]] = []
+        cur_s = cur_e = None
+        for s, e in spans:
+            if not text[s:e].strip():
+                continue
+            if cur_s is None:
+                cur_s, cur_e = s, e
+                continue
+            if (cur_e - cur_s) < self.min_chars and (e - cur_s) <= self.max_chars:
+                cur_e = e                                  # grow the window
+            else:
+                merged.append((cur_s, cur_e))
+                cur_s, cur_e = s, e
+        if cur_s is not None:
+            merged.append((cur_s, cur_e))
+        return merged
+
     def chunk(self, parsed: ParsedDoc, document_id: str) -> list[Chunk]:
         chunks: list[Chunk] = []
         for unit in parsed.units:
@@ -237,7 +268,7 @@ class Chunker:
                               page=unit.index, bbox=tuple(b for _, b in unit.words))
                 chunks.append(Chunk(unit.text, loc))
                 continue
-            for (s, e) in _segments(unit.text):
+            for (s, e) in self._merge(_segments(unit.text), unit.text):
                 span = unit.text[s:e].strip()
                 if not span:
                     continue
@@ -282,8 +313,14 @@ def ingest_document(store: Store, matter_id: str, document_id: str, data: bytes,
     except UnsupportedType as ex:
         return IngestReport(document_id, "?", 0, "failed", str(ex))
 
-    for i, ch in enumerate(chunks):
+    # batch-embed when the provider supports it (hundreds-of-pages documents:
+    # per-chunk calls cost ~50-100ms overhead each; batching is ~10x faster)
+    if hasattr(embedder, "embed_batch") and len(chunks) > 8:
+        vectors = embedder.embed_batch([ch.text for ch in chunks])
+    else:
+        vectors = [embedder.embed(ch.text) for ch in chunks]
+    for i, (ch, vec) in enumerate(zip(chunks, vectors)):
         store.put_chunk(f"{document_id}-c{i}", matter_id, text=ch.text,
-                        locator=ch.locator, embedding=embedder.embed(ch.text),
+                        locator=ch.locator, embedding=vec,
                         document_id=document_id)
     return IngestReport(document_id, parsed.kind, len(chunks), "done")
