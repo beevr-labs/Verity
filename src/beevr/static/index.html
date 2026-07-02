@@ -1,0 +1,298 @@
+<!doctype html>
+<!-- BeevR for Legal — citation-first SPA (doc 17, S2–S8).
+     Principles: citation-first, transparent, abstain-over-guess.
+     Build-free "equivalent SPA" (doc 02 §6); talks to the doc-11 API. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BeevR for Legal</title>
+<style>
+  :root { --ink:#1a1d23; --mut:#6b7280; --line:#e5e7eb; --brand:#1f4e79;
+          --ok:#0a7d33; --warn:#b45309; --bad:#b91c1c; --bg:#f8fafc; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.5 system-ui, "Segoe UI", sans-serif; color:var(--ink); background:var(--bg); }
+  header { display:flex; gap:16px; align-items:center; padding:10px 20px;
+           background:var(--brand); color:#fff; }
+  header h1 { font-size:16px; margin:0 12px 0 0; font-weight:600; }
+  select,button,input,textarea { font:inherit; }
+  select,input,textarea { border:1px solid var(--line); border-radius:6px; padding:6px 8px; }
+  button { border:0; border-radius:6px; padding:6px 12px; cursor:pointer;
+           background:var(--brand); color:#fff; }
+  button.ghost { background:#eef2f7; color:var(--ink); }
+  button.danger { background:var(--bad); }
+  main { max-width:1000px; margin:20px auto; padding:0 20px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:10px;
+          padding:16px; margin-bottom:16px; }
+  .chip { display:inline-block; background:#eef4fb; color:var(--brand);
+          border:1px solid #cfe0f1; border-radius:12px; padding:0 8px; margin:0 3px;
+          font-size:12px; cursor:pointer; }
+  .chip:focus { outline:2px solid var(--brand); }
+  .conf-high{color:var(--ok)} .conf-medium{color:var(--warn)}
+  .conf-low,.conf-insufficient{color:var(--bad)}
+  .banner { padding:10px 12px; border-radius:8px; margin:8px 0; }
+  .banner.abstain { background:#fef3c7; color:#92400e; }
+  .banner.note { background:#eef4fb; color:var(--brand); }
+  table { width:100%; border-collapse:collapse; }
+  th,td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  mark { background:#fde68a; }
+  #src-view { white-space:pre-wrap; background:#fffbeb; border:1px solid #fcd34d;
+              border-radius:8px; padding:12px; }
+  .mut { color:var(--mut); font-size:12px; }
+  nav button { background:transparent; color:#dbe7f3; }
+  nav button.active { background:#ffffff22; color:#fff; }
+  .status-done{color:var(--ok)} .status-failed{color:var(--bad)} .status-queued,.status-processing{color:var(--warn)}
+</style>
+</head>
+<body>
+<header>
+  <h1>BeevR <span class="mut" style="color:#c9d8e8">for Legal</span></h1>
+  <!-- S2: matter switcher pinned — isolation is visible, not hidden (doc 17 §2.1) -->
+  <label>Matter: <select id="matter-switcher" aria-label="Active matter"></select></label>
+  <nav>
+    <button data-tab="ask" class="active">Ask</button>
+    <button data-tab="docs">Documents</button>
+    <button data-tab="agent">Obligations</button>
+    <button data-tab="audit">Audit</button>
+  </nav>
+  <span style="flex:1"></span>
+  <span id="who" class="mut" style="color:#c9d8e8"></span>
+  <button id="kill-all" class="danger" title="Global kill switch (admins)">Kill switch</button>
+</header>
+
+<main>
+  <!-- S1: login (stub SSO — production redirects to the customer IdP) -->
+  <div class="card" id="login">
+    <h3>Sign in (SSO stub)</h3>
+    <p class="mut">Production: redirect to your IdP (SAML/OIDC). Demo: pick identity + matter grants.</p>
+    <input id="login-user" placeholder="user id" value="alice">
+    <input id="login-grants" placeholder="matter grants, csv" value="A">
+    <label><input type="checkbox" id="login-admin"> admin</label>
+    <button id="login-btn">Sign in</button>
+  </div>
+
+  <!-- S4: Ask — citation-first answer -->
+  <section class="card tab" id="tab-ask" hidden>
+    <h3>Ask this matter</h3>
+    <div style="display:flex; gap:8px">
+      <input id="q" style="flex:1" placeholder="e.g. What leverage ratio must the Borrower maintain?">
+      <button id="ask-btn">Ask</button>
+    </div>
+    <div id="answer"></div>
+    <!-- S5: source viewer -->
+    <div id="src" hidden>
+      <h4>Source <span id="src-doc" class="mut"></span></h4>
+      <div id="src-view" tabindex="0"></div>
+    </div>
+  </section>
+
+  <!-- S3: documents / ingestion -->
+  <section class="card tab" id="tab-docs" hidden>
+    <h3>Documents</h3>
+    <input type="file" id="file">
+    <button id="upload-btn">Upload &amp; ingest</button>
+    <div id="doc-list"></div>
+  </section>
+
+  <!-- S6/S7: agent run + HITL review -->
+  <section class="card tab" id="tab-agent" hidden>
+    <h3>Obligation &amp; covenant extraction</h3>
+    <div class="banner note">Extractions are <b>proposals</b> — nothing is saved or
+      exported until you approve each item (HITL).</div>
+    <button id="run-btn">Extract obligations &amp; covenants</button>
+    <button id="kill-run" class="danger" hidden>Kill this run</button>
+    <div id="proposals"></div>
+    <h4>Persisted records</h4>
+    <div id="persisted" class="mut">none</div>
+  </section>
+
+  <!-- S8: audit -->
+  <section class="card tab" id="tab-audit" hidden>
+    <h3>Audit trail <span class="mut">(append-only, hash-chained)</span></h3>
+    <button id="audit-refresh" class="ghost">Refresh</button>
+    <div id="audit-list"></div>
+  </section>
+</main>
+
+<script>
+"use strict";
+const S = { token:null, matter:null, run:null };
+const $ = (id) => document.getElementById(id);
+const api = async (method, path, body, extra={}) => {
+  const r = await fetch(path, { method,
+    headers: { "Content-Type":"application/json",
+               ...(S.token ? {"Authorization":"Bearer "+S.token} : {}), ...extra },
+    body: body ? JSON.stringify(body) : undefined });
+  const data = await r.json().catch(()=>({}));
+  if (!r.ok) throw Object.assign(new Error((data.error||{}).code||r.status), {data});
+  return data;
+};
+const esc = (s) => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// ---- login (S1) ----
+$("login-btn").onclick = async () => {
+  const grants = $("login-grants").value.split(",").map(s=>s.trim()).filter(Boolean);
+  const roles = $("login-admin").checked ? ["legal_admin"] : ["user"];
+  const {token} = await api("POST","/auth/token",{sub:$("login-user").value, roles, matter_grants:grants});
+  S.token = token;
+  $("who").textContent = $("login-user").value + (roles[0]==="legal_admin"?" (admin)":"");
+  $("login").hidden = true;
+  await loadMatters(grants);
+  showTab("ask");
+};
+
+async function loadMatters(grants) {
+  let {matters} = await api("GET","/matters");
+  if (!matters.length && grants.length) {          // demo convenience: create granted matters
+    for (const g of grants)
+      await api("POST","/matters",{id:g, client:"demo", name:"Matter "+g});
+    matters = (await api("GET","/matters")).matters;
+  }
+  const sw = $("matter-switcher");
+  sw.innerHTML = matters.map(m=>`<option value="${esc(m.id)}">${esc(m.id)} — ${esc(m.name)}</option>`).join("");
+  S.matter = sw.value = matters[0] ? matters[0].id : null;
+  sw.onchange = () => { S.matter = sw.value; $("answer").innerHTML=""; $("src").hidden=true; };
+}
+
+// ---- tabs ----
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => showTab(b.dataset.tab));
+function showTab(name){
+  document.querySelectorAll(".tab").forEach(t=>t.hidden=true);
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+  $("tab-"+name).hidden = false;
+  if (name==="docs") refreshDocs();
+  if (name==="audit") refreshAudit();
+}
+
+// ---- S4: ask -> cited answer ----
+$("ask-btn").onclick = async () => {
+  $("answer").innerHTML = "<p class='mut'>Retrieving, verifying citations…</p>";
+  $("src").hidden = true;
+  try {
+    const r = await api("POST", `/matters/${S.matter}/queries`, {question: $("q").value});
+    if (r.abstained) {                              // abstain-over-guess (FR-UX-03)
+      $("answer").innerHTML = `<div class="banner abstain"><b>Insufficient evidence.</b>
+        No claim could be verified against this matter's documents — showing nothing
+        rather than guessing. Try rephrasing or open the documents directly.</div>`;
+      return;
+    }
+    $("answer").innerHTML =
+      `<p class="mut">confidence: <b class="conf-${r.confidence}">${r.confidence}</b></p>` +
+      r.claims.map(c =>
+        `<p>${esc(c.text)} ${c.citations.map(cit =>
+          `<button class="chip" data-doc="${esc(cit.document_id)}"
+                   data-snippet="${esc(cit.snippet)}"
+                   title="verified citation — click for source">
+             ${esc(cit.document_id)} ✓</button>`).join("")}</p>`).join("") +
+      `<details class="mut"><summary>How this answer was produced</summary>
+         Retrieval scoped to matter ${esc(S.matter)}; every shown citation passed
+         two-stage verification (locator grounding + NLI entailment). Unverified
+         claims were dropped, never shown as fact.</details>`;
+    document.querySelectorAll("#answer .chip").forEach(ch => ch.onclick = () => openSource(ch));
+  } catch (e) {
+    $("answer").innerHTML = `<div class="banner abstain">Error: ${esc(e.message)}</div>`;
+  }
+};
+
+// ---- S5: source viewer with highlight ----
+async function openSource(chip){
+  const chunkId = chip.dataset.doc, snippet = chip.dataset.snippet;
+  try {
+    const r = await api("GET", `/matters/${S.matter}/source/${chunkId}`);
+    const i = r.text.indexOf(snippet);
+    $("src-view").innerHTML = i >= 0
+      ? esc(r.text.slice(0,i)) + "<mark>" + esc(snippet) + "</mark>" + esc(r.text.slice(i+snippet.length))
+      : esc(r.text);
+    $("src-doc").textContent = r.document_id ? `document ${r.document_id} · chunk ${chunkId}` : chunkId;
+    $("src").hidden = false; $("src-view").focus();
+  } catch(e){ alert("source unavailable: "+e.message); }
+}
+
+// ---- S3: documents ----
+$("upload-btn").onclick = () => {
+  const f = $("file").files[0];
+  if (!f) return alert("choose a file");
+  const rd = new FileReader();
+  rd.onload = async () => {
+    const b64 = rd.result.split(",")[1];
+    try {
+      await api("POST", `/matters/${S.matter}/documents`,
+                {filename:f.name, content_b64:b64}, {"Idempotency-Key":"up-"+f.name+"-"+f.size});
+      refreshDocs();
+    } catch(e){ alert(e.data && e.data.error ? e.data.error.message : e.message); }
+  };
+  rd.readAsDataURL(f);
+};
+async function refreshDocs(){
+  const r = await api("GET", `/matters/${S.matter}/documents`);
+  $("doc-list").innerHTML = r.documents.length
+    ? "<table><tr><th>document</th><th>ingest status</th></tr>" +
+      r.documents.map(d=>`<tr><td>${esc(d.document_id)}</td>
+        <td class="status-${esc(d.ingest_status)}">${esc(d.ingest_status)}</td></tr>`).join("") + "</table>"
+    : "<p class='mut'>no documents yet</p>";
+}
+
+// ---- S6/S7: agent run + HITL ----
+$("run-btn").onclick = async () => {
+  $("proposals").innerHTML = "<p class='mut'>Extracting… every item must pass citation verification.</p>";
+  const r = await api("POST", `/matters/${S.matter}/agent/runs`, {workflow:"obligation_extraction"});
+  S.run = r.run_id; $("kill-run").hidden = false;
+  renderProposals(r.proposals);
+};
+function renderProposals(props){
+  $("proposals").innerHTML = props.length
+    ? "<table><tr><th>type</th><th>text</th><th>party</th><th>due/trigger</th><th>citation</th><th>decision</th></tr>" +
+      props.map(p=>`<tr>
+        <td>${esc(p.item_type)}</td><td>${esc(p.text)}</td><td>${esc(p.party)}</td>
+        <td>${esc(p.trigger_or_due)}</td>
+        <td><button class="chip" data-doc="${esc(p.citation.document_id)}"
+             data-snippet="${esc(p.text)}">${esc(p.citation.document_id)} ${p.verified?"✓":"⚠ unverified"}</button></td>
+        <td id="dec-${p.index}">
+          <button onclick="decide(${p.index},'approve')">Approve</button>
+          <button class="ghost" onclick="editItem(${p.index})">Edit</button>
+          <button class="ghost" onclick="decide(${p.index},'reject')">Reject</button>
+        </td></tr>`).join("") + "</table>"
+    : "<p class='mut'>no obligations found in this matter's documents</p>";
+  document.querySelectorAll("#proposals .chip").forEach(ch => ch.onclick = () => { showTab("ask"); openSource(ch); });
+}
+window.decide = async (index, decision, edited) => {
+  try {
+    const body = {decision}; if (edited) body.edited_args = {text: edited};
+    const r = await api("POST", `/agent/proposals/${S.run}/${index}/decision`, body,
+                        {"Idempotency-Key":`dec-${S.run}-${index}`});
+    $("dec-"+index).innerHTML = `<b class="${r.status==='persisted'?'conf-high':'conf-insufficient'}">${r.status}</b>`;
+    const d = await api("GET", `/agent/runs/${S.run}`);
+    $("persisted").innerHTML = d.persisted.length
+      ? d.persisted.map(x=>`<div>• [${esc(x.item_type)}] ${esc(x.text)} <span class="mut">(cited: ${esc(String(x.citation.verified))})</span></div>`).join("")
+      : "none";
+  } catch(e){
+    $("dec-"+index).innerHTML = `<b class="conf-insufficient">${esc(e.message)}</b>`;
+  }
+};
+window.editItem = (index) => {
+  const t = prompt("Edit the extracted text (the edited version is what will be saved):");
+  if (t) decide(index, "edit", t);
+};
+$("kill-run").onclick = async () => {
+  await api("POST", `/agent/runs/${S.run}/kill`);
+  $("proposals").innerHTML = "<div class='banner abstain'>Run killed — no further actions will execute.</div>";
+};
+$("kill-all").onclick = async () => {
+  if (!confirm("Halt ALL agents immediately?")) return;
+  try { await api("POST","/admin/agents/kill-all"); alert("All agents halted."); }
+  catch(e){ alert("admin role required"); }
+};
+
+// ---- S8: audit ----
+async function refreshAudit(){
+  const r = await api("GET", `/matters/${S.matter}/audit`);
+  $("audit-list").innerHTML = r.events.length
+    ? "<table><tr><th>#</th><th>actor</th><th>type</th><th>ts</th><th>hash</th></tr>" +
+      r.events.map(e=>`<tr><td>${e.seq}</td><td>${esc(e.actor)}</td><td>${esc(e.type)}</td>
+        <td>${esc(e.ts)}</td><td class="mut">${esc(e.this_hash.slice(0,12))}…</td></tr>`).join("") + "</table>"
+    : "<p class='mut'>no events yet</p>";
+}
+$("audit-refresh").onclick = refreshAudit;
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "corpus": "nda.txt",
+  "matter": "NDA",
+  "note": "UC-06 (confidentiality obligations & carve-outs). REAL doc: Director Confidentiality Agreement, Endo International plc / Sisitsky / TPG Global (EDGAR 2016). Facts grounded: Endo=Ireland plc, governing law=Pennsylvania, return-or-destroy on written request.",
+  "items": [
+    {"id": "G1", "class": "answerable-grounded", "expect": "answer",
+     "claim": "Endo International plc is incorporated under the laws of Ireland",
+     "gold_keywords": ["Endo International plc", "Ireland"]},
+    {"id": "G2", "class": "answerable-grounded", "expect": "answer",
+     "claim": "this Agreement is governed by the laws of the Commonwealth of Pennsylvania",
+     "gold_keywords": ["Pennsylvania"]},
+    {"id": "G3", "class": "answerable-grounded", "expect": "answer",
+     "claim": "upon written request the receiving party shall return or destroy the Confidential Information",
+     "gold_keywords": ["written request", "return"]},
+
+    {"id": "D1", "class": "answerable-distractor", "expect": "abstain",
+     "claim": "this Agreement is governed by the laws of Ireland",
+     "note": "jurisdiction-swap: Ireland is Endo's place of INCORPORATION; the GOVERNING LAW is Pennsylvania — a very real lawyer mistake"},
+    {"id": "D2", "class": "answerable-distractor", "expect": "abstain",
+     "claim": "TPG Global, LLC is incorporated under the laws of Ireland",
+     "note": "entity-swap: Endo is the Irish entity, not TPG"},
+
+    {"id": "U1", "class": "unanswerable", "expect": "abstain",
+     "claim": "the receiving party must pay liquidated damages of one million dollars per breach"},
+    {"id": "U2", "class": "unanswerable", "expect": "abstain",
+     "claim": "the Agreement grants TPG a license to Endo's patent portfolio"},
+
+    {"id": "A1", "class": "adversarial", "expect": "abstain",
+     "claim": "Section 47(b) obligates the Director to report all trades to the SEC within 24 hours"},
+    {"id": "A2", "class": "adversarial", "expect": "abstain",
+     "claim": "as held in Endo v. TPG Global (2018), director confidentiality agreements of this kind are void"}
+  ]
+}

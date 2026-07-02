@@ -1,0 +1,169 @@
+EX-10.2
+3
+d124569dex102.htm
+EX-10.2
+
+EX-10.2
+
+ Exhibit 10.2 
+
+DIRECTOR CONFIDENTIALITY AGREEMENT 
+
+THIS DIRECTOR CONFIDENTIALITY AGREEMENT (this “Agreement”) is entered into as of May 5, 2016 and is effective
+upon the date hereof, by and between Endo International plc, a public limited company incorporated under the laws of Ireland (“Endo”), Todd B. Sisitsky, an individual (“Sisitsky”), and TPG Global, LLC
+(“TPG” or, either Sisitsky or TPG, a “receiving party”). 
+ WHEREAS, concurrently with the
+execution of this Agreement, Sisitsky is being appointed to serve on the Board of Directors of Endo; and 
+ WHEREAS, in connection
+with Sisitsky’s appointment, the parties may disclose to each other certain non-public confidential and proprietary information pertaining to such possible relationship, as set forth below. 
+
+NOW THEREFORE, the parties hereto, intending to be legally bound, agree as follows: 
+
+1.
+For purposes of this Agreement, “Confidential Information” shall mean all non-public and proprietary information that has been or will be disclosed by one party, or one of its Affiliates to the other party, or
+one of its Affiliates, whether set forth orally or in writing which may relate to among other things, their respective business interests, technical information, clinical data, product specifications, product development plans and ideas, marketing
+plans and ideas, manufacturing information, financial information, strategic considerations or business operations. Endo Confidential Information may also include non-public and proprietary information of its Affiliates. 
+
+For purposes of this Agreement, “Affiliate” means with respect to a particular party, a person, corporation or partnership or other
+entity that controls, is controlled by or under common control with such party. For the purposes of this definition, “control” (including the correlative meaning, the terms “controlled by” or “under common control
+with”) means the actual power, either directly or indirectly through one or more intermediaries, to direct or cause the direction of the management and policies of such entity, whether by ownership of fifty percent (50%) or more of the
+voting stock of such entity, or by contract or otherwise. 
+
+2.
+The parties hereby agree that the following shall not be considered Confidential Information subject to this Agreement: 
+
+(a)
+information that, prior to the time of disclosure, is in the public domain; 
+
+(b)
+information that, after disclosure, becomes part of the public domain by publication or otherwise; provided that such publication is not in violation of this Agreement or, to the receiving party’s knowledge, any
+other confidentiality agreement to which Sisitsky, TPG or any of their respective Affiliates is party; 
+
+ Director Confidentiality Agreement 
+
+(c)
+information that the receiving party can establish in writing was already known to it or was in its possession prior to the time of disclosure and was not acquired, directly or indirectly, from the disclosing party;
+
+(d)
+information that the receiving party lawfully received from a third party; provided however, that such third party was not obligated to hold such information in confidence; 
+
+(e)
+information that was independently developed by the receiving party without reference to any Confidential Information as established by appropriate documentation; and 
+
+(f)
+information that the receiving party is compelled to disclose by a court or other tribunal of competent jurisdiction; provided, however, that in such case the receiving party shall immediately give as much advance
+notice as feasible to the disclosing party so that the disclosing party may seek a protective order or other remedy from said court or tribunal. In any event, the receiving party shall disclose only that portion of the Confidential Information that,
+in the opinion of its legal counsel, is legally required to be disclosed and will exercise reasonable efforts to ensure that any such information so disclosed will be accorded confidential treatment by said court or tribunal. 
+
+3.
+Subject to paragraph 4, the receiving party and the TPG Recipients (as defined below) shall not use Confidential Information of the disclosing party for any purpose other than for the purpose of Sisitsky’s service
+as a director of Endo; provided, however, that Sisitsky and the TPG Recipients (as defined below) shall be entitled, subject to compliance with applicable law, to use Confidential Information for purposes of monitoring, managing and
+making investment, voting, governance or other decisions relating to TPG’s and its Affiliates’ investment in Endo. 
+
+4.
+The receiving party will not disclose any such Confidential Information to any person; provided, however, that Confidential Information may be disclosed by Sisitsky or any TPG Recipient to (i) in the
+case of Confidential Information that is financial performance information regarding the Company, any employees, attorneys, independent contractors designated as senior advisors, directors and officers of TPG or its Affiliates (excluding portfolio
+companies) (the “TPG Recipients”) and (ii) in all cases, to TPG Recipients who serve on the investment committee of TPG Capital or to any partners, employees and senior advisors of TPG or any of its Affiliates that need to know
+such information for the purposes set forth in paragraph 3, in the case of each of clauses (i) and (ii) so long as such TPG Recipients have relevant knowledge or expertise and are bound by confidentiality obligations at least as
+restrictive as those contained in this Agreement. TPG represents and warrants that it has instituted reasonable procedures to ensure compliance with the foregoing restrictions on disclosures to TPG Recipients and agrees that it will reasonably
+cooperate with Endo to institute further procedures that are necessary or appropriate to protect Confidential Information of Endo. 
+
+ 2 
+
+ Director Confidentiality Agreement 
+
+5.
+Upon written request of the disclosing party, the receiving party shall return promptly to the disclosing party (or, at the receiving party’s option, destroy) all Confidential Information furnished to it, including
+any copies thereof and notes, extracts, or derivative materials based thereon (provided that if the receiving party so opts to destroy, the receiving party shall confirm and certify such destruction in writing to the disclosing party); and until
+this Agreement is terminated or until the expiration of the confidentiality obligations set forth in this Agreement, shall keep confidential and not use in any way detrimental to the disclosing party any analyses, compilations, studies or other
+documents which reflect any of the Confidential Information. Notwithstanding the foregoing provision, the receiving party shall not be required to delete the Confidential Information from back-up archival storage and may retain one (1) copy of
+Confidential Information in its confidential files solely for record keeping and compliance purposes. 
+
+6.
+Title to, and all rights emanating from the ownership of, all Confidential Information disclosed under this Agreement shall remain vested in the disclosing party or any of its Affiliates. Nothing herein shall be
+construed as granting any license or option, in favor of the receiving party, in such Confidential Information under any patent, copyright and/or any other rights now or hereafter held by the disclosing party or any Affiliate of the disclosing party
+in or as a result of such Confidential Information other than as specifically agreed upon by the parties. 
+
+7.
+Each receiving party acknowledges that, by virtue of the examination of the Confidential Information in accordance with the terms of this Agreement, it and its Affiliates, employees, attorneys, independent contractors
+designated as senior advisors, directors and officers may have access to material, non-public information, and it is aware (and will so advise its Affiliates, employees, attorneys, independent contractors designated as senior advisors, directors and
+officers who are informed as to the matters which are subject to this Agreement and who receive Confidential Information) that applicable securities laws, including United States federal and state securities laws, generally prohibit any person who
+has material, non-public information concerning a publicly-traded company from purchasing or selling any securities of such company or from communicating such information to any other person or entity under circumstances in which it is reasonably
+foreseeable that such person is likely to purchase or sell such securities. Each receiving party agrees that it will not, and will direct its Affiliates, employees, attorneys, independent contractors designated as senior advisors, directors and
+officers who have received Confidential Information not to, use or permit any third party to use any Confidential Information in contravention of the United States federal and state securities laws, including the Securities Exchange Act of 1934, as
+amended, including the rules and regulations promulgated thereunder. 
+
+8.
+The execution and performance of this Agreement does not obligate the parties, or any of the parties’ Affiliates, to enter into any other agreement or to perform any obligations other than as specified herein.
+
+ 3 
+
+ Director Confidentiality Agreement 
+
+9.
+The receiving party agrees that the disclosure of Confidential Information to any third party without the express written consent of the disclosing party may cause irreparable harm to the disclosing party or its
+Affiliates, and that any breach or threatened breach of this Agreement by the receiving party will entitle the disclosing party or any of its Affiliates to seek injunctive relief, in addition to any other legal remedies available to it, in any court
+of competent jurisdiction. 
+
+10.
+No failure or delay by the disclosing party or any of its Affiliates in exercising any right, power, or privilege hereunder shall operate as a waiver thereof, nor shall any single or partial exercise thereof preclude
+any other or future exercise thereof or the exercise of any other right, power or privilege hereunder. 
+
+11.
+The parties hereby agree that this Agreement represents the entire agreement between the parties with respect to the subject matter hereof and supersedes all prior and/or contemporaneous agreements and understandings
+between the parties with respect to the handling of Confidential Information (including the Confidentiality Agreement by and among Endo Pharmaceuticals, Inc., Sisitsky and TPG, dated April 25, 2016), whether written, oral, visual, audio or in
+any other medium whatsoever. This Agreement shall be governed by the laws of the Commonwealth of Pennsylvania without reference to its conflict of laws rules. This Agreement may not be amended or in any manner modified except by a written instrument
+signed by authorized representatives of both parties. If any provision of this Agreement is found to be unenforceable, the remainder shall be enforced as fully as possible and the unenforceable provision shall be deemed modified to the limited
+extent required to permit its enforcement in a manner most closely representing the intention of the parties as expressed herein. 
+
+12.
+This Agreement shall terminate and all obligations and rights hereunder shall expire upon the first anniversary of the first date on which Sisitsky is no longer a member of the board of directors of Endo.
+
+13.
+This Agreement shall be binding on each party’s successors and assigns. 
+
+14.
+This Agreement may be executed in two or more counterparts, each of which shall be deemed an original, but all of which shall constitute the same agreement. Signatures to this Agreement transmitted by facsimile, by
+electronic mail in “portable document format” (“.pdf”), or by any other electronic means which preserves the original graphic and pictorial appearance of the Agreement, shall have the same effect as physical delivery of the paper
+document bearing the original signature. 
+
+ 4 
+
+ IN WITNESS WHEREOF, the parties hereto have executed this Agreement as of the day and year first
+above written. 
+
+ENDO INTERNATIONAL PLC
+
+By:
+
+/s/ Rajiv De Silva
+
+By:
+
+/s/ Todd B. Sisitsky
+
+Name:
+
+Rajiv De Silva
+
+Todd B. Sisitsky
+
+Title:
+
+President and CEO
+
+TPG GLOBAL, LLC
+
+By:
+
+/s/ Clive Bode
+
+Name:
+
+Clive Bode
+
+Title:
+
+Vice President
+
+ [Signature Page to Director Confidentiality Agreement]

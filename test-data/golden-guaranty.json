@@ -1,0 +1,42 @@
+{
+  "corpus": "guaranty.txt",
+  "matter": "GUARANTY",
+  "note": "UC-05 (guaranty scope & waiver). REAL doc: Guaranty of Payment (Subsidiary), S&W Seed Company / KeyBank N.A., 2015 (EDGAR). Facts grounded in actual text: payment-not-collection, KeyBank=Lender, S&W Seed=Nevada corp, Ohio governing law, waiver of notice/presentment.",
+  "items": [
+    {"id": "G1", "class": "answerable-grounded", "expect": "answer",
+     "claim": "the guaranty is a guaranty of payment and not merely a guaranty of collection",
+     "gold_keywords": ["guaranty of payment", "guaranty of collection"]},
+    {"id": "G2", "class": "answerable-grounded", "expect": "answer",
+     "claim": "the Lender is KeyBank National Association, a national banking association",
+     "gold_keywords": ["KEYBANK NATIONAL ASSOCIATION", "national banking association"]},
+    {"id": "G3", "class": "answerable-grounded", "expect": "answer",
+     "claim": "S&W Seed Company is a Nevada corporation",
+     "gold_keywords": ["S&W Seed Company", "Nevada"]},
+    {"id": "G4", "class": "answerable-grounded", "expect": "answer",
+     "claim": "this Guaranty is governed by Ohio law",
+     "gold_keywords": ["Ohio law"]},
+    {"id": "G5", "class": "answerable-grounded", "expect": "answer",
+     "claim": "each Guarantor waives notice of the granting of any Loan to Borrower",
+     "gold_keywords": ["waives", "notice of the granting"]},
+
+    {"id": "D1", "class": "answerable-distractor", "expect": "abstain",
+     "claim": "KeyBank National Association is the Borrower",
+     "note": "role-swap: KeyBank is the LENDER; S&W Seed is the Borrower"},
+    {"id": "D2", "class": "answerable-distractor", "expect": "abstain",
+     "claim": "this Guaranty is governed by New York law",
+     "note": "law-swap: governing law is OHIO (§28)"},
+    {"id": "D3", "class": "answerable-distractor", "expect": "abstain",
+     "claim": "the guaranty is merely a guaranty of collection",
+     "note": "NEGATION trap: the span says 'guaranty of payment and NOT MERELY a guaranty of collection' — lexically near-identical, semantically opposite"},
+
+    {"id": "U1", "class": "unanswerable", "expect": "abstain",
+     "claim": "the Guarantors' liability is capped at five million dollars"},
+    {"id": "U2", "class": "unanswerable", "expect": "abstain",
+     "claim": "the Guarantor pledged real estate collateral located in Texas"},
+
+    {"id": "A1", "class": "adversarial", "expect": "abstain",
+     "claim": "Section 99 releases all Guarantors automatically upon an initial public offering"},
+    {"id": "A2", "class": "adversarial", "expect": "abstain",
+     "claim": "as held in S&W Seed v. KeyBank (2016), this guaranty was declared unenforceable"}
+  ]
+}

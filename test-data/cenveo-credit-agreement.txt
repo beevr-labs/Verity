@@ -1,0 +1,360 @@
+EX-10.1
+2
+e61933099ex10_1.htm
+EXHIBIT 10.1
+
+ e61933099ex10_1.htm
+
+ Exhibit 10.1
+
+CREDIT AGREEMENT SUPPLEMENT
+
+CREDIT AGREEMENT SUPPLEMENT, dated as of June 5, 2012 (this “Credit Agreement Supplement”), by and among CENVEO CORPORATION, a Delaware corporation (the “Borrower”), CENVEO, INC., a Colorado corporation, BANK OF AMERICA, N.A., as Administrative Agent (“Administrative Agent”) under the Credit Agreement (as defined below), each Incremental Term Loan Lender (as defined below) and each of the other Loan Parties that is a party hereto.
+
+RECITALS:
+
+WHEREAS, reference is hereby made to the Amended and Restated Credit Agreement, dated as of December 21, 2010 (as amended, supplemented, amended and restated or otherwise modified from time to time, the “Credit Agreement”), among the Borrower, Cenveo, Inc., a Colorado corporation, each Lender from time to time party thereto, and Bank of America, N.A., as Administrative Agent, Swing Line Lender and L/C Issuer (capitalized terms used but not defined herein having the meaning provided in the Credit Agreement);
+
+WHEREAS, the Borrower has hereby notified the Administrative Agent that it is requesting an increase to the Term B Facility pursuant to Section 2.14(a) of the Credit Agreement;
+
+WHEREAS, pursuant to Section 2.14(c) of the Credit Agreement, the Borrower may obtain incremental term loan commitments to increase any existing Term Facility by, among other things, entering into a Credit Agreement Supplement in accordance with the terms and conditions of the Credit Agreement;
+
+WHEREAS, the Borrower has requested an increase in the Term B Facility in an aggregate principal amount of $65,000,000 (the “Incremental Term Loans” and the commitments relating thereto, the “Incremental Term Loan Commitments”); and
+
+WHEREAS, the Persons party to this Credit Agreement Supplement as lenders with respect to the Incremental Term Loans (such Persons and any assignees thereof, the “Incremental Term Loan Lenders”) have indicated their willingness to lend such Incremental Term Loans on the terms and subject to the conditions herein.
+
+NOW, THEREFORE, in consideration of the premises and agreements, provisions and covenants herein contained, the parties hereto agree as follows:
+
+Subject to the terms and conditions set forth herein, each Incremental Term Loan Lender severally agrees to make Incremental Term Loans to the Borrower on the Term Facility Increase Effective Date (as defined below) in the amount of such Incremental Term Loan Lender’s Incremental Term Loan Commitment as set forth on Schedule A. Pursuant to Section 2.14(f)(i) of the Credit Agreement, the Incremental Term Loans shall be Term B Loans for all purposes under the Credit Agreement and each other Loan 
+
+Document and shall have terms identical to the Term B Loans outstanding under the Credit Agreement immediately prior to the date hereof (the “Existing Term B Loans” and, together with the Incremental Term Loans, the “Term B Loans”), which shall include among other things the following terms:
+
+1. 
+
+Amortization and Maturity Date. Pursuant to Section 2.14(d) of the Credit Agreement, Section 2.07(a) of the Credit Agreement shall be deemed amended to increase the remaining unpaid installments of principal outstanding under the Term B Facility by an aggregate amount equal to the principal amount of the Incremental Term Loans, such aggregate amount to be applied to increase such installments ratably in accordance with the amounts in effect immediately prior to the Term Facility Increase Effective Date.
+
+2. 
+
+Credit Agreement Governs. The Incremental Term Loans shall have identical terms as the Existing Term B Loans and shall otherwise be subject to the provisions of the Credit Agreement and the other Loan Documents, each reference to a “Term B Loan” or “Term B Loans” in the Credit Agreement shall be deemed to include the Incremental Term Loans and other related terms will have correlative meanings mutatis mutandis.
+
+3. 
+
+Conditions to Effectiveness. This Credit Agreement Supplement shall become effective on June 8, 2012 (the “Term Facility Increase Effective Date”) when:
+
+ (i) 
+
+this Credit Agreement Supplement shall have been executed and delivered by the Borrower, the other Loan Parties, each Incremental Term Loan Lender party hereto and the Administrative Agent;
+
+ (ii) 
+
+the Administrative Agent shall have received evidence, including UCC, tax and judgment lien searches from the jurisdiction of formation and/or jurisdiction of the chief executive office, as applicable, of each Loan Party, that none of the Collateral is subject to any Liens (in each case other than Permitted Liens);
+
+ (iii) 
+
+the Administrative Agent shall have received a certificate of a Responsible Officer of the Borrower certifying that: (a) each of the conditions set forth in Sections 4.02(a) and (b) of the Credit Agreement have been satisfied (provided, for the avoidance of doubt that the conditions set forth in Section 4.02(c) of the Credit Agreement must be satisfied before any Credit Extension with respect to the Incremental Term Loans), (b) no Default has occurred and is continuing or would result from the Borrowings to be made on the Term Facility Increase Effective Date and (c) after giving effect to the Borrowings of the Incremental Term Loans to be made on the Term Facility Increase Effective Date, (A) the Borrower is in compliance with each of the covenants set forth in Section 7.11 of the Credit Agreement on a Pro Forma Basis and (B) Total Outstandings plus the aggregate unused Revolving Credit Commitments do not exceed the Maximum First Lien Principal Indebtedness (as defined in the Intercreditor Agreement);
+
+ (iv) 
+
+the Administrative Agent’s receipt of certified copies of resolutions or other action, incumbency certificates and/or other certificates of Responsible Officers of each Loan Party as the Administrative Agent may require evidencing the identity, authority and capacity of each Responsible Officer thereof authorized to
+
+-2-
+
+execute and deliver this Credit Agreement Supplement and the other documents contemplated hereby;
+
+ (v) 
+
+the Administrative Agent’s receipt of (a) certificates attesting to the Solvency of each Loan Party before and after giving effect to the incurrence of the Incremental Term Loans, from its chief financial officer, and (b) a certificate of a Responsible Officer of each Loan Party either (x) attaching copies of all consents, licenses and approvals required in connection with the execution, delivery and performance by such Loan Party and the validity against such Loan Party of this Credit Agreement Supplement and the other documents contemplated hereby, and such consents, licenses and approvals shall be in full force and effect, or (y) stating that no such consents, licenses or approvals are so required;
+
+ (vi) 
+
+all fees and reasonable and documented out-of-pocket expenses of the Administrative Agent and Bank of America, N.A. (the “Arranger”), including all reasonable and documented fees and expenses of counsel to the Administrative Agent and the Arranger, shall have been paid or reimbursed, on or prior to the date hereof;
+
+ (vii) 
+
+the Administrative Agent’s receipt of (a) a favorable opinion of Ian R. Scheinmann, Esq., Vice President, Legal Affairs of Holdings, addressed to the Administrative Agent and each Lender, as to such matters concerning the Loan Parties and this Credit Agreement Supplement and the other documents contemplated hereby as the Administrative Agent may reasonably request and (b) a favorable opinion of Hughes Hubbard & Reed LLP, special counsel to the Loan Parties, addressed to the Administrative Agent and each Lender, as to such matters concerning the Loan Parties and this Credit Agreement Supplement and the other documents contemplated hereby as the Administrative Agent may reasonably request; and
+
+ (viii) 
+
+to the extent any Incremental Term Loan Lender is an Additional Term Lender (as defined in Section 2.14(b) of the Credit Agreement), the Administrative Agent’s receipt of a joinder agreement in the form of Exhibit L to the Credit Agreement.
+
+4. 
+
+Representations and Warranties. By its execution of this Credit Agreement Supplement, the Borrower hereby represents and warrants that:
+
+ (i) 
+
+the execution, delivery and performance by each Loan Party of this Credit Agreement Supplement have been duly authorized by all necessary corporate or other organizational action, and do not and will not (a) contravene the terms of such Loan Party’s Organization Documents; (b) conflict with or result in any breach or contravention of, or result in the creation of any Lien under (i) any Contractual Obligation to which such Loan Party is a party or binding upon such Loan Party or the properties of such Loan Party or any of its Subsidiaries or (ii) any order, injunction, writ or decree of any Governmental Authority or any arbitral award to which such 
+
+-3-
+
+Loan Party or its property is subject; or (c) violate any Law, except in each case referred to in the foregoing clauses (b) and (c), to the extent that such conflict, breach, contravention or violation could not reasonably be expected to have a Material Adverse Effect; and
+
+ (ii) 
+
+no approval, consent, exemption, authorization, or other action by, or notice to, or filing with, any Governmental Authority or any other Person is necessary or required in connection with the execution, delivery or performance by, or enforcement against, any Loan Party of this Credit Agreement Supplement, or for the Borrowing of the Incremental Term Loans, except for (a) filings and recordings necessary to perfect Liens created under the Collateral Documents, and (b) such authorizations, approvals, actions, notices and filings that have been duly obtained, taken, given or made and are in full force and effect.
+
+5. 
+
+Use of Proceeds. The Borrower covenants and agrees that it will use the proceeds of the Incremental Term Loans to repay Revolving Credit Loans and to pay fees and expenses relating thereto and to this Credit Agreement Supplement.
+
+6. 
+
+Term Facility Increase Request. By its execution of this Credit Agreement Supplement, the Borrower hereby delivers and the Administrative Agent hereby acknowledges receipt of this Credit Agreement Supplement as a Term Facility Increase Notice pursuant to Section 2.14(a) of the Credit Agreement.
+
+7. 
+
+Acknowledgments. Each Loan Party hereby expressly acknowledges the terms of this Credit Agreement Supplement and reaffirms, as of the date hereof, (i) the covenants and agreements contained in each Loan Document to which it is a party, including, in each case, such covenants and agreements as in effect immediately after giving effect to this Credit Agreement Supplement and the transactions contemplated hereby and (ii) its guarantee of the Obligations (including, without limitation, the Incremental Term Loans) under the Collateral Documents and its grant of Liens on the Collateral to secure the Obligations (including, without limitation, the Obligations with respect to the Incremental Term Loans) pursuant to the Collateral Documents.
+
+8. 
+
+Amendment, Modification and Waiver. This Credit Agreement Supplement may not be amended, modified or waived except in accordance with Section 11.01 of the Credit Agreement.
+
+9. 
+
+Liens Unimpaired. After giving effect to this Credit Agreement Supplement, neither the modification of the Credit Agreement effected pursuant to this Credit Agreement Supplement nor the execution, delivery, performance or effectiveness of this Credit Agreement Supplement:
+
+-4-
+
+ (a) 
+
+impairs the validity, effectiveness or priority of the Liens granted pursuant to any Loan Document, and such Liens continue unimpaired with the same priority to secure repayment of all Obligations, whether heretofore or hereafter incurred; or
+
+ (b) 
+
+requires that any new filings be made or other action taken to perfect or to maintain the perfection of such Liens.
+
+10.
+
+Syndication Agent. General Electric Capital Corporation shall be Syndication Agent with respect to the Incremental Term Loans hereunder.
+
+11. 
+
+Entire Agreement. This Credit Agreement Supplement, the Credit Agreement and the other Loan Documents constitute the entire agreement among the parties hereto with respect to the subject matter hereof and thereof and supersede all other prior agreements and understandings, both written and verbal, among the parties hereto with respect to the subject matter hereof. Except as expressly set forth herein, this Credit Agreement Supplement shall not by implication or otherwise limit, impair, constitute a waiver of, or otherwise affect the rights and remedies of any party under, the Credit Agreement, nor alter, modify, amend or in any way affect any of the terms, conditions, obligations, covenants or agreements contained in the Credit Agreement, all of which are ratified and affirmed in all respects and shall continue in full force and effect. It is understood and agreed that each reference in each Loan Document to the Credit Agreement, whether direct or indirect, shall hereafter be deemed to be a reference to the Credit Agreement as amended hereby and that this Credit Agreement Supplement is a Loan Document.
+
+12. 
+
+GOVERNING LAW. THIS CREDIT AGREEMENT SUPPLEMENT AND THE RIGHTS AND OBLIGATIONS OF THE PARTIES HEREUNDER SHALL BE GOVERNED BY, AND CONSTRUED AND INTERPRETED IN ACCORDANCE WITH, THE LAWS OF THE STATE OF NEW YORK. SECTIONS 11.14 AND 11.15 OF THE CREDIT AGREEMENT ARE HEREBY INCORPORATED BY REFERENCE INTO THIS CREDIT AGREEMENT SUPPLEMENT AND SHALL APPLY HERETO.
+
+13. 
+
+Severability. If any provision of this Credit Agreement Supplement is held to be illegal, invalid or unenforceable, the legality, validity and enforceability of the remaining provisions of this Credit Agreement Supplement shall not be affected or impaired thereby. The invalidity of a provision in a particular jurisdiction shall not invalidate or render unenforceable such provision in any other jurisdiction.
+
+14. 
+
+Counterparts. This Credit Agreement Supplement may be executed in one or more counterparts, each of which shall be deemed an original, but all of which together shall constitute one and the same instrument. Delivery by facsimile or other electronic means of an executed counterpart of a signature page to this Credit Agreement Supplement shall be effective as delivery of an original executed counterpart of this Credit Agreement Supplement.
+
+-5-
+
+IN WITNESS WHEREOF, each of the undersigned has caused its duly authorized officer to execute and deliver this Credit Agreement Supplement as of the date first written above.
+
+BANK OF AMERICA, N.A.,
+
+ as Administrative Agent
+
+By:
+
+/s/ Paley Chen
+
+Name:
+
+Paley Chen
+
+Title:
+
+Vice President
+
+[Credit Agreement Supplement]
+
+BANK OF AMERICA, N.A.,
+
+ as Incremental Term Loan Lender
+
+By:
+
+/s/ Lisa M. Webster
+
+Name:
+
+Lisa M. Webster
+
+Title:
+
+Director
+
+[Credit Agreement Supplement]
+
+CENVEO CORPORATION
+
+By:
+
+/s/ Mark S. Hiltwein
+
+Name:
+
+Mark S. Hiltwein
+
+Title:
+
+Chief Financial Officer
+
+CENVEO, INC.
+
+By:
+
+/s/ Mark S. Hiltwein
+
+Name:
+
+Mark S. Hiltwein
+
+Title:
+
+Chief Financial Officer
+
+[Credit Agreement Supplement]
+
+AGREED AND ACCEPTED:
+
+CENVEO COMMERCIAL OHIO, LLC, a Colorado limited liability company
+
+CNMW INVESTMENTS, INC., a Delaware corporation
+
+CENVEO GOVERNMENT PRINTING, INC., a Colorado corporation
+
+CENVEO SERVICES, LLC, a Colorado limited liability company
+
+DISCOUNT LABELS, LLC, an Indiana limited liability company
+
+CENVEO OMEMEE LLC, a Delaware limited liability company
+
+COLORHOUSE CHINA, INC., a Colorado corporation
+
+RX JV HOLDING, INC., a Delaware corporation
+
+CRX JV, LLC, a Delaware limited liability company
+
+CRX HOLDING, INC., a Delaware corporation
+
+RX TECHNOLOGY CORP., a Delaware corporation
+
+CADMUS PRINTING GROUP, INC., a Virginia corporation
+
+CADMUS FINANCIAL DISTRIBUTION, INC. a Virginia corporation
+
+CADMUS TECHNOLOGY SOLUTIONS, INC., a Virginia corporation
+
+GARAMOND/PRIDEMARK PRESS, INC., a Maryland corporation
+
+WASHBURN GRAPHICS, INC., a North Carolina corporation
+
+CADMUS JOURNAL SERVICES, INC., a Virginia corporation
+
+CADMUS DELAWARE, INC., a Delaware corporation
+
+CADMUS UK, INC., a Virginia corporation
+
+EXPERT GRAPHICS, INC., a Virginia corporation
+
+CADMUS MARKETING GROUP, INC., a Virginia corporation
+
+CADMUS DIRECT MARKETING, INC. , a North Carolina corporation
+
+CADMUS INTERACTIVE, INC., a Georgia corporation
+
+CADMUS MARKETING, INC., a Virginia corporation
+
+CADMUS/O’KEEFE MARKETING, INC., a Virginia corporation
+
+OLD TSI, INC., a Georgia corporation
+
+CADMUS INVESTMENTS, LLC, a Delaware limited liability company
+
+PORT CITY PRESS, INC., a Maryland corporation
+
+SCIENCE CRAFTSMAN INCORPORATED, a New York corporation
+
+CADMUS INTERNATIONAL HOLDINGS, INC., a Virginia corporation
+
+CDMS MANAGEMENT, LLC, a Delaware limited liability company
+
+MADISON/GRAHAM COLORGRAPHICS, INC., a California corporation
+
+PC INK CORP., a Delaware corporation
+
+CENVEO NIC, INC. (formerly known as Printegra Corporation), a Georgia corporation
+
+VSUB HOLDING COMPANY, a Virginia corporation
+
+VAUGHAN PRINTERS INCORPORATED, a Florida corporation
+
+By:
+
+/s/ Mark S. Hiltwein
+
+Name:
+
+Mark S. Hiltwein
+
+Title:
+
+Chief Financial Officer
+
+[Credit Agreement Supplement]
+
+MADISON/GRAHAM COLORGRAPHICS INTERSTATE SERVICES, INC.,
+
+a California corporation
+
+COMMERCIAL ENVELOPE MANUFACTURING CO. INC., a New York corporation
+
+CENVEO CEM, INC., a Delaware corporation
+
+CENVEO CEM, LLC, a Delaware limited liability company
+
+REX 2010, LLC, a Florida limited liability company
+
+136 EASTPORT ROAD, LLC, a Delaware limited liability company
+
+LIGHTNING LABELS, LLC, a Delaware limited liability company
+
+NASHUA CORPORATION, a Massachusetts corporation
+
+NASHUA INTERNATIONAL, INC., a Delaware corporation
+
+IMPAXX, INC., a Delaware corporation
+
+CMS GILBRETH PACKAGING SYSTEMS, INC., a Delaware corporation
+
+ENVELOPE PRODUCT GROUP, LLC, a Delaware limited liability company
+
+By:
+
+/s/ Mark S. Hiltwein
+
+Name:
+
+Mark S. Hiltwein
+
+Title:
+
+Chief Financial Officer
+
+[Credit Agreement Supplement]
+
+SCHEDULE A
+
+to CREDIT AGREEMENT SUPPLEMENT
+
+Name of New Loan Lender
+
+Type of Commitment
+
+Amount
+
+BANK OF AMERICA, N.A.
+
+Incremental Term Loan Commitment
+
+$65,000,000
+
+[Joinder Agreement]

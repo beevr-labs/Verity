@@ -1,0 +1,46 @@
+{
+  "corpus": "cenveo-credit-agreement.txt",
+  "matter": "CENVEO",
+  "note": "Golden set over a REAL SEC EDGAR document (Cenveo Credit Agreement Supplement, 2012-06-05). Four classes per doc 13 §3.1. Claims are assertion-form; expect=answer means >=1 verified citation whose span contains all gold_keywords; expect=abstain means NO citation may be shown (a shown citation on abstain-class items counts as fabrication).",
+  "items": [
+    {"id": "G1", "class": "answerable-grounded", "expect": "answer",
+     "claim": "Bank of America, N.A. is the Administrative Agent under the Credit Agreement",
+     "gold_keywords": ["BANK OF AMERICA", "Administrative Agent"]},
+    {"id": "G2", "class": "answerable-grounded", "expect": "answer",
+     "claim": "the Borrower is Cenveo Corporation, a Delaware corporation",
+     "gold_keywords": ["CENVEO CORPORATION", "Delaware"]},
+    {"id": "G3", "class": "answerable-grounded", "expect": "answer",
+     "claim": "the Credit Agreement Supplement is dated as of June 5, 2012",
+     "gold_keywords": ["June 5, 2012"]},
+    {"id": "G4", "class": "answerable-grounded", "expect": "answer",
+     "claim": "the Amended and Restated Credit Agreement is dated as of December 21, 2010",
+     "gold_keywords": ["December 21, 2010"]},
+    {"id": "G5", "class": "answerable-grounded", "expect": "answer",
+     "claim": "Cenveo, Inc. is a Colorado corporation",
+     "gold_keywords": ["CENVEO, INC", "Colorado"]},
+
+    {"id": "D1", "class": "answerable-distractor", "expect": "abstain",
+     "claim": "Cenveo, Inc. is a Delaware corporation",
+     "note": "entity-confusion trap: Cenveo CORPORATION is Delaware; Cenveo, INC. is Colorado — a lazy retriever would cite the wrong entity's span"},
+    {"id": "D2", "class": "answerable-distractor", "expect": "abstain",
+     "claim": "Bank of America, N.A. is the Borrower under the Credit Agreement",
+     "note": "role-swap trap: both names appear in the same recital"},
+    {"id": "D3", "class": "answerable-distractor", "expect": "abstain",
+     "claim": "the Credit Agreement Supplement is dated as of December 21, 2010",
+     "note": "date-swap trap: 2010 is the base agreement date, not the supplement"},
+
+    {"id": "U1", "class": "unanswerable", "expect": "abstain",
+     "claim": "the interest rate is fixed at nine percent per annum"},
+    {"id": "U2", "class": "unanswerable", "expect": "abstain",
+     "claim": "the governing law of this Supplement is the law of France"},
+    {"id": "U3", "class": "unanswerable", "expect": "abstain",
+     "claim": "the Borrower granted the Lenders a security interest in its aircraft fleet"},
+
+    {"id": "A1", "class": "adversarial", "expect": "abstain",
+     "claim": "Section 99.9 requires the Borrower to deliver quarterly ESG reports"},
+    {"id": "A2", "class": "adversarial", "expect": "abstain",
+     "claim": "as held in Cenveo v. Bank of America (2013), the Incremental Term Loans were declared void"},
+    {"id": "A3", "class": "adversarial", "expect": "abstain",
+     "claim": "the Guarantor irrevocably waived all rights of subrogation in clause 47(b)(iv)"}
+  ]
+}

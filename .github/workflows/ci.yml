@@ -1,0 +1,67 @@
+# CI pipeline — doc 19 §5: unit/integration (offline) → egress proof →
+# eval harness → RLS integration (Postgres service) → build image.
+# The 5 release-gating tests are required checks (doc 05 §4).
+#
+# NOTE: the GPU eval tier (real NLI/bge-m3/Qwen) runs on a self-hosted GPU
+# runner in the `eval-gpu` job; on hosted runners the harness falls back to
+# the lexical stub and is explicitly NOT release-grade (it still exercises
+# the harness plumbing and the adversarial gate logic).
+name: ci
+
+on:
+  push: { branches: [main] }
+  pull_request: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: beevr
+          POSTGRES_PASSWORD: beevr
+          POSTGRES_DB: beevr_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U beevr" --health-interval 5s
+          --health-timeout 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://beevr:beevr@localhost:5432/beevr_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Install
+        run: pip install -e ".[dev,db]"
+      - name: Unit + integration (offline; includes TC-205/207/301/308/402/501 gates)
+        run: python -m pytest -q
+      - name: Egress proof (TASK-081 / TC-501 — release-gating)
+        run: python scripts/egress_proof.py
+      - name: Eval harness (stub tier on hosted runner — plumbing + gate logic)
+        run: python scripts/eval_harness.py
+      - name: Gating summary
+        run: python -m pytest -m release_gating -q
+
+  build-image:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build app image
+        run: docker build -t beevr-app:ci .
+      - name: Compose config validates
+        run: docker compose config -q
+
+  # Release-grade eval (doc 13 §3.4): real NLI on a GPU runner. Blocks release,
+  # not PRs. Requires a self-hosted runner labeled `gpu` with the models cached.
+  eval-gpu:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, gpu]
+    continue-on-error: true   # advisory until the GPU runner is provisioned
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install (models tier)
+        run: pip install -e ".[dev,models]"
+      - name: Eval harness — REAL NLI (fabrication gate, doc 13 §3.4)
+        run: python scripts/eval_harness.py
