@@ -113,6 +113,12 @@ def _session_from_token(state: AppState, token: str) -> Session:
                    walled_groups=frozenset(claims.get("walled", [])))
 
 
+def create_real_app() -> FastAPI:
+    """uvicorn factory for real-models mode (bge-m3 + NLI + Qwen on GPU):
+    `uvicorn beevr.api:create_real_app --factory`. Loads weights at startup."""
+    return create_app(AppState.with_real_models())
+
+
 # --------------------------------------------------------------------------
 # App factory
 # --------------------------------------------------------------------------
