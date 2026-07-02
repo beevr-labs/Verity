@@ -15,7 +15,7 @@ reports the doc-13 §3.3 metrics:
 Exit code 1 if the adversarial gate fails -> pluggable as the CI gate
 (doc 19 §5 "eval harness" stage; doc 13 §3.4).
 
-Usage:  python scripts/eval_harness.py [golden.json]
+Usage:  python scripts/eval_harness.py [golden.json] [--nli MODEL] [--no-embed]
 """
 import json
 import sys
@@ -27,8 +27,16 @@ sys.path.insert(0, str(ROOT / "src"))
 
 
 def main() -> int:
-    golden_path = Path(sys.argv[1]) if len(sys.argv) > 1 else \
-        ROOT / "test-data" / "golden-cenveo.json"
+    args = [a for a in sys.argv[1:]]
+    nli_model = None
+    if "--nli" in args:
+        i = args.index("--nli")
+        nli_model = args[i + 1]
+        del args[i:i + 2]
+    use_embed = "--no-embed" not in args
+    if not use_embed:
+        args.remove("--no-embed")
+    golden_path = Path(args[0]) if args else ROOT / "test-data" / "golden-cenveo.json"
     golden = json.loads(golden_path.read_text(encoding="utf-8"))
 
     print("== eval harness (doc 13 §3) ==")
@@ -37,13 +45,24 @@ def main() -> int:
     t0 = time.time()
     try:
         from beevr.models import CrossEncoderNLI
-        nli = CrossEncoderNLI()
-        print(f"   verifier: REAL NLI cross-encoder ({time.time()-t0:.0f}s to load)")
+        nli = CrossEncoderNLI(nli_model) if nli_model else CrossEncoderNLI()
+        print(f"   verifier: REAL NLI ({nli_model or 'nli-deberta-v3-base'}, "
+              f"{time.time()-t0:.0f}s to load)")
     except Exception as ex:
         print(f"   verifier: NLI unavailable ({ex}); using lexical stub — "
               f"results are NOT release-grade")
         from beevr.verification import lexical_overlap
         nli = lambda span, claim: lexical_overlap(claim, span)
+
+    embedder = None
+    if use_embed:
+        try:
+            from beevr.models import Bgem3Embedder
+            t1 = time.time()
+            embedder = Bgem3Embedder()
+            print(f"   retrieval: REAL bge-m3 vector arm ({time.time()-t1:.0f}s to load)")
+        except Exception as ex:
+            print(f"   retrieval: bge-m3 unavailable ({ex}); word-overlap fallback")
 
     from beevr.audit import AuditLog
     from beevr.ingest import ingest_document
@@ -54,7 +73,7 @@ def main() -> int:
     store.put_matter(golden["matter"], client="eval", name="eval")
     text = (ROOT / "test-data" / golden["corpus"]).read_text(encoding="utf-8")
     rep = ingest_document(store, golden["matter"], "doc-eval",
-                          text.encode(), golden["corpus"])
+                          text.encode(), golden["corpus"], embedder=embedder)
     session = Session("eval", matter_grants=frozenset({golden["matter"]}))
     print(f"   corpus: {golden['corpus']} -> {rep.chunks} chunks\n")
 
@@ -68,7 +87,8 @@ def main() -> int:
     abstain_total = 0
 
     for item in golden["items"]:
-        res = matter_qa(store, session, golden["matter"], item["claim"], nli=nli)
+        res = matter_qa(store, session, golden["matter"], item["claim"],
+                        nli=nli, embedder=embedder)
         cited_spans = [c.snippet for claim in res.claims for c in claim.citations]
         shown_citations += len(cited_spans)
         expect = item["expect"]

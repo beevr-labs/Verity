@@ -17,7 +17,7 @@ from .verification import NLI, AnswerResult, Claim, Verifier
 
 
 def matter_qa(store: Store, session: Session, matter_id: str, question: str,
-              *, nli: NLI, ts: str = "") -> AnswerResult:
+              *, nli: NLI, embedder=None, ts: str = "") -> AnswerResult:
     # 1. retrieve candidates within the authorized matter partition (isolation)
     rows = store.retrieve_chunks(session, matter_id, ts=ts)
     q_tokens = {t.lower() for t in question.split()}
@@ -25,9 +25,20 @@ def matter_qa(store: Store, session: Session, matter_id: str, question: str,
     def overlap(text: str) -> int:
         return len(q_tokens & {t.lower() for t in text.split()})
 
-    ranked = sorted(rows, key=lambda r: -overlap(r.data["text"]))
-    vector_arm = [r.id for r in ranked]                       # semantic-ish order
-    bm25_arm = [r.id for r in ranked if overlap(r.data["text"]) > 0]  # lexical hits
+    # vector arm: REAL cosine over ingested embeddings when an embedder is
+    # available (bge-m3 in production, doc 14); word-overlap fallback otherwise
+    if embedder is not None and rows and rows[0].data.get("embedding"):
+        qv = embedder.embed(question)
+        def cos(r):
+            v = r.data["embedding"]
+            num = sum(a * b for a, b in zip(qv, v))
+            den = (sum(a * a for a in qv) ** 0.5) * (sum(b * b for b in v) ** 0.5)
+            return num / den if den else 0.0
+        vector_arm = [r.id for r in sorted(rows, key=lambda r: -cos(r))]
+    else:
+        vector_arm = [r.id for r in sorted(rows, key=lambda r: -overlap(r.data["text"]))]
+    bm25_arm = [r.id for r in sorted(rows, key=lambda r: -overlap(r.data["text"]))
+                if overlap(r.data["text"]) > 0]               # lexical hits
 
     # 2. matter-partition guard feeds fusion (defense in depth)
     allowed = store.resolve_candidates(session, matter_id, [r.id for r in rows], ts=ts)

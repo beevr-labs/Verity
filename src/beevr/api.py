@@ -234,7 +234,8 @@ def _register_resource_routes(app, state: AppState, require_session):
             data = payload["content"].encode("utf-8")
 
         if data is not None:
-            report = ingest_document(state.store, matter_id, did, data, filename)
+            report = ingest_document(state.store, matter_id, did, data, filename,
+                                     embedder=getattr(state, "embedder", None))
             if report.status == "failed":
                 state.store.documents[did].data["ingest_status"] = "failed"
                 return JSONResponse(status_code=422, content={"error": {
@@ -266,7 +267,8 @@ def _register_resource_routes(app, state: AppState, require_session):
         if idempotency_key and idempotency_key in state.idempotency:
             return state.idempotency[idempotency_key]
         result = matter_qa(state.store, s, matter_id, payload["question"],
-                           nli=state.nli, ts=payload.get("ts", ""))
+                           nli=state.nli, embedder=getattr(state, "embedder", None),
+                           ts=payload.get("ts", ""))
         answer_id = state.next_id("ans")
         resp = {
             "answer_id": answer_id,
