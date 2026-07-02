@@ -92,6 +92,34 @@ class CrossEncoderNLI:
         return float(logits[self.entail_idx])
 
 
+class BgeReranker:
+    """bge-reranker-v2-m3 cross-encoder (doc 14 §1: 'tighten top-k before
+    answer composition'). Retrieval casts a wide net (RRF top ~24); the
+    reranker scores (query, chunk) pairs jointly and keeps the few excerpts
+    the LLM actually reads — better spans AND fewer map calls. fp16 (~1.1GB)
+    so the full roster fits a 12GB dev GPU."""
+
+    def __init__(self, model_name: str = "BAAI/bge-reranker-v2-m3",
+                 device: str | None = "cpu"):
+        # default CPU: scoring ~24 pairs costs ~2-3s there, while keeping the
+        # 12GB dev GPU for the LLM/embedder/NLI (measured: a 4th GPU model
+        # saturated VRAM and slowed EVERYTHING — ingest 136s->649s). Pilot
+        # 48GB HW passes device="cuda".
+        import torch
+        from sentence_transformers import CrossEncoder
+        kwargs = {"dtype": torch.float16} if device and device != "cpu" else {}
+        self.model = CrossEncoder(model_name, device=device, model_kwargs=kwargs)
+
+    def rerank(self, query: str, candidates: list[tuple[str, str]],
+               top_k: int = 4) -> list[str]:
+        """candidates: [(chunk_id, text)] -> best chunk_ids, best first."""
+        if not candidates:
+            return []
+        scores = self.model.predict([(query, text) for _, text in candidates])
+        order = sorted(range(len(candidates)), key=lambda i: -float(scores[i]))
+        return [candidates[i][0] for i in order[:top_k]]
+
+
 def load_default_runtime(device: str | None = None) -> dict:
     """Load the doc-14 default roster. Raises ImportError if deps missing —
     callers fall back to stubs (and tests skip)."""

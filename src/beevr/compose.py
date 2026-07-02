@@ -99,7 +99,7 @@ _STOP = frozenset("a an and are as at be by for from has have in is it of on or 
 
 
 def matter_ask(store: Store, session: Session, matter_id: str, question: str,
-               *, llm, nli: NLI, embedder=None, top_n: int = 6,
+               *, llm, nli: NLI, embedder=None, reranker=None, top_n: int = 6,
                ts: str = "") -> ComposedAnswer:
     # 1. retrieve (isolation + RRF; real embeddings when available)
     rows = store.retrieve_chunks(session, matter_id, ts=ts)
@@ -120,7 +120,15 @@ def matter_ask(store: Store, session: Session, matter_id: str, question: str,
         vec = [r.id for r in sorted(rows, key=lambda r: -overlap(r))]
     lex = [r.id for r in sorted(rows, key=lambda r: -overlap(r)) if overlap(r) > 0]
     allowed = store.resolve_candidates(session, matter_id, [r.id for r in rows], ts=ts)
-    top = fuse_ids([vec, lex], allowed=allowed, top_n=top_n)
+    if reranker is not None:
+        # wide net (RRF top ~24) -> joint (query, chunk) scoring -> few best
+        # excerpts (doc 14 §1): better spans AND fewer LLM map calls
+        wide = fuse_ids([vec, lex], allowed=allowed, top_n=max(4 * top_n, 24))
+        texts = {r.id: r.data["text"] for r in rows}
+        top = reranker.rerank(question, [(cid, texts[cid]) for cid in wide],
+                              top_k=max(top_n - 2, 4))
+    else:
+        top = fuse_ids([vec, lex], allowed=allowed, top_n=top_n)
 
     by_id = {r.id: r.data["text"] for r in rows}
     excerpts = [(i + 1, cid, by_id[cid]) for i, cid in enumerate(top)]

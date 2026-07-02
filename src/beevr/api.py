@@ -68,6 +68,11 @@ class AppState:
         except ImportError:
             pass  # stubs remain; /readyz reports degraded mode
         try:
+            from .models import BgeReranker
+            state.reranker = BgeReranker()          # CPU by default (see models.py)
+        except Exception:
+            pass  # optional; compose falls back to plain RRF order
+        try:
             from .llm import LlmExtractor, TransformersLLM
             # dev-box tier: one resident generative model; 3B reads legal
             # excerpts reliably where 1.5B refuses (see PROGRESS stress test).
@@ -284,6 +289,7 @@ def _register_resource_routes(app, state: AppState, require_session):
             from .compose import matter_ask
             result = matter_ask(state.store, s, matter_id, payload["question"],
                                 llm=state.llm, nli=state.nli, embedder=embedder,
+                                reranker=getattr(state, "reranker", None),
                                 ts=payload.get("ts", ""))
             answer_text = result.answer_text
         else:                                           # assertion-check fallback

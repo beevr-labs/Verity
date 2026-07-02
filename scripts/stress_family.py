@@ -54,12 +54,17 @@ def main() -> int:
     print("== AMENDMENT-CHAIN STRESS: 3 real documents, one matter ==")
 
     from beevr.llm import TransformersLLM
-    from beevr.models import Bgem3Embedder, CrossEncoderNLI
+    from beevr.models import Bgem3Embedder, BgeReranker, CrossEncoderNLI
     t0 = time.time()
     embedder = Bgem3Embedder()
     nli = CrossEncoderNLI()
     llm = TransformersLLM("Qwen/Qwen2.5-3B-Instruct")
-    print(f"   models loaded in {time.time()-t0:.0f}s")
+    try:
+        reranker = BgeReranker()
+        print(f"   models loaded in {time.time()-t0:.0f}s (with reranker)")
+    except Exception as ex:
+        reranker = None
+        print(f"   models loaded in {time.time()-t0:.0f}s (reranker unavailable: {ex})")
 
     store = Store(audit=AuditLog())
     store.put_matter("TDFAM", client="Credit Suisse AG", name="TransDigm facility")
@@ -88,7 +93,8 @@ def main() -> int:
     lat = []
     for q, expect_kw in QUESTIONS:
         t0 = time.time()
-        ans = matter_ask(store, s, "TDFAM", q, llm=llm, nli=nli, embedder=embedder)
+        ans = matter_ask(store, s, "TDFAM", q, llm=llm, nli=nli,
+                         embedder=embedder, reranker=reranker)
         dt = time.time() - t0
         lat.append(dt)
         if ans.abstained:
