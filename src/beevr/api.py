@@ -304,6 +304,31 @@ def _register_resource_routes(app, state: AppState, require_session):
             state.idempotency[idempotency_key] = resp
         return resp
 
+    @app.post("/matters/{matter_id}/playbook-review")
+    def playbook_review(matter_id: str, payload: dict = Body(default={}),
+                        authorization: str = Header(None)):
+        """Contract review vs playbook (US-303b). Flags cite real clauses
+        (TC-306); suggested redlines are proposals, never applied (TC-307)."""
+        from .playbook import FI_DEFAULT_PLAYBOOK, Rule, review
+        s = require_session(authorization)
+        if state.llm is None:
+            return JSONResponse(status_code=501, content={"error": {
+                "code": "VALIDATION", "message": "playbook review requires the "
+                "model runtime (real-models mode)", "request_id": "-", "details": {}}})
+        rules = None
+        if payload.get("rules"):
+            rules = [Rule(r["id"], r.get("topic", ""), r["standard_position"],
+                          r.get("severity", "medium"), r.get("keywords", ""))
+                     for r in payload["rules"]]
+        flags = review(state.store, s, matter_id, llm=state.llm, rules=rules,
+                       embedder=getattr(state, "embedder", None),
+                       ts=payload.get("ts", ""))
+        return {"flags": [{
+            "rule_id": f.rule_id, "topic": f.topic, "severity": f.severity,
+            "status": f.status, "quote": f.quote, "rationale": f.rationale,
+            "chunk_id": f.chunk_id, "suggested_redline": f.suggested_redline,
+        } for f in flags]}
+
     @app.get("/matters/{matter_id}/briefing")
     def briefing(matter_id: str, authorization: str = Header(None),
                  today: str | None = None):
